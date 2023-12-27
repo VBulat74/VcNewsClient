@@ -82,12 +82,12 @@ fun IconWithText(
         Icon(
             painter = painterResource(id = iconResId), 
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary
+            tint = MaterialTheme.colorScheme.onSecondaryContainer
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
@@ -120,14 +120,14 @@ private fun PostHeader() {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "14:00",
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
 
         Icon(
             imageVector = Icons.Rounded.MoreVert,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary
+            tint = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
