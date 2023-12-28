@@ -9,21 +9,19 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.com.vbulat.vcnewsclient.MainViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 
 @Composable
-fun MainScreen(){
-
-    val feedPost = remember {
-        mutableStateOf(FeedPost())
-    }
-
+fun MainScreen(
+    viewModel: MainViewModel
+){
     Scaffold (
         bottomBar = {
             NavigationBar {
@@ -54,30 +52,24 @@ fun MainScreen(){
         },
     ){ paddingValues ->
         //Box(modifier = Modifier.padding(paddingValues))
+        val feedPost = viewModel.feedPost.observeAsState(FeedPost())
         PostCard(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(8.dp),
             feedPost = feedPost.value,
-            onStatisticsItemClickListener = { newItem ->
-                val oldStatistics = feedPost.value.statistics
-                val newStatistics = oldStatistics.toMutableList().apply {
-                    replaceAll { oldItem ->
-                        if (oldItem.type == newItem.type) {
-                            oldItem.copy(count = oldItem.count + 1)
-                        } else {
-                            oldItem
-                        }
-                    }
-                }
-                feedPost.value = feedPost.value.copy(statistics = newStatistics)
-            }
+            onLikeClickListener = { item ->
+                viewModel.updateCount(item)
+            },
+            onSharesClickListener = { item ->
+                viewModel.updateCount(item)
+            },
+            onViewsClickListener = { item ->
+                viewModel.updateCount(item)
+            },
+            onCommentsClickListener = { item ->
+                viewModel.updateCount(item)
+            },
         )
     }
-}
-
-@Preview
-@Composable
-fun MainScreenPreview(){
-    MainScreen()
 }
