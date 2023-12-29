@@ -32,7 +32,7 @@ import ru.com.vbulat.vcnewsclient.domain.StatisticType
 
 @Composable
 fun PostCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     feedPost : FeedPost,
     onLikeClickListener : (StatisticItem) -> Unit,
     onSharesClickListener : (StatisticItem) -> Unit,
