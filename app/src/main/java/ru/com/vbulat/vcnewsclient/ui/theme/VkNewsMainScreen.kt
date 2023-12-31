@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,30 +21,42 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ru.com.vbulat.vcnewsclient.MainViewModel
 import ru.com.vbulat.vcnewsclient.navigaton.AppNavGraph
+import ru.com.vbulat.vcnewsclient.navigaton.Screen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
-){
+) {
     val navHostController = rememberNavController()
 
-    Scaffold (
+    Scaffold(
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val items = listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
-                items.forEach {item ->
+                val items =
+                    listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
+                items.forEach { item ->
                     NavigationBarItem(
                         selected = currentRoute == item.screen.route,
-                        onClick = { navHostController.navigate(route = item.screen.route) },
+                        onClick = {
+                            navHostController.navigate(
+                                route = item.screen.route
+                            ) {
+                                popUpTo(Screen.NewsFeed.route){
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
                         label = {
                             Text(text = stringResource(id = item.titleResId))
                         },
                         icon = {
-                            Icon(item.icon, contentDescription =null )
+                            Icon(item.icon, contentDescription = null)
                         },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -57,11 +69,16 @@ fun MainScreen(
 
             }
         },
-    ){ paddingValues ->
+    ) { paddingValues ->
         //Box(modifier = Modifier.padding(paddingValues))
         AppNavGraph(
             navHostController = navHostController,
-            homeScreenContent = { HomeScreen(viewModel= viewModel, paddingValues = paddingValues) },
+            homeScreenContent = {
+                HomeScreen(
+                    viewModel = viewModel,
+                    paddingValues = paddingValues
+                )
+            },
             favoriteScreenContent = { TextCounter(name = "Favorite") },
             profileScreenContent = { TextCounter(name = "Profile") },
         )
@@ -69,13 +86,13 @@ fun MainScreen(
 }
 
 @Composable
-private fun TextCounter(name : String){
-    var count by remember {
+private fun TextCounter(name: String) {
+    var count by rememberSaveable {
         mutableStateOf(0)
     }
 
     Text(
-        modifier = Modifier.clickable { count++},
+        modifier = Modifier.clickable { count++ },
         text = "$name Count: $count"
     )
 }
