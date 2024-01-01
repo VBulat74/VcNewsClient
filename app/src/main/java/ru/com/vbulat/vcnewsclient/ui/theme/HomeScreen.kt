@@ -1,20 +1,12 @@
 package ru.com.vbulat.vcnewsclient.ui.theme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SwipeToDismiss
-import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import ru.com.vbulat.vcnewsclient.MainViewModel
+import ru.com.vbulat.vcnewsclient.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -24,7 +16,20 @@ fun HomeScreen(
 ){
     val feedPosts = viewModel.feedPosts.observeAsState(listOf())
 
-    LazyColumn(
+    val comments = mutableListOf<PostComment>().apply {
+        repeat(20){
+            add(
+                PostComment(id = it)
+            )
+        }
+    }
+
+    CommentsScreen(
+        feedPost = feedPosts.value.get(0),
+        comments = comments
+    )
+
+    /*LazyColumn(
         modifier = Modifier
             .padding(paddingValues),
         contentPadding = PaddingValues(
@@ -67,5 +72,5 @@ fun HomeScreen(
                 )}
             )
         }
-    }
+    }*/
 }
