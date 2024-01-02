@@ -4,20 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
-import ru.com.vbulat.vcnewsclient.domain.PostComment
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
-import ru.com.vbulat.vcnewsclient.ui.theme.HomeScreenState
-import ru.com.vbulat.vcnewsclient.ui.theme.NavigationItem
+import ru.com.vbulat.vcnewsclient.ui.theme.NewsFeedScreenState
 
-class MainViewModel : ViewModel() {
-
-    private val comments = mutableListOf<PostComment>().apply {
-        repeat(10){
-            add(
-                PostComment(id = it)
-            )
-        }
-    }
+class NewsFeedViewModel : ViewModel() {
 
     val sourceList = mutableListOf<FeedPost>().apply {
         repeat(10){
@@ -30,34 +20,15 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private val initialState = HomeScreenState.Posts(posts = sourceList)
+    private val initialState = NewsFeedScreenState.Posts(posts = sourceList)
 
-    private val _screenState = MutableLiveData<HomeScreenState>(initialState)
-    val screenState: LiveData<HomeScreenState> = _screenState
+    private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
+    val screenState: LiveData<NewsFeedScreenState> = _screenState
 
-    private val _selectedNavItem = MutableLiveData<NavigationItem> (NavigationItem.Home)
-    val selectedNavItem : LiveData <NavigationItem> = _selectedNavItem
-
-    private var savedState : HomeScreenState? = initialState
-
-    fun selectNavIem (item: NavigationItem) {
-        _selectedNavItem.value = item
-    }
-
-    fun showComment (
-        feedPost: FeedPost
-    ){
-        savedState = screenState.value
-        _screenState.value = HomeScreenState.Comments(feedPost = feedPost, comments = comments)
-    }
-
-    fun closeComments(){
-        _screenState.value = savedState
-    }
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
 
         val currentState = screenState.value
-        if (currentState !is HomeScreenState.Posts) return
+        if (currentState !is NewsFeedScreenState.Posts) return
 
         val oldPosts = currentState.posts.toMutableList()
 
@@ -81,17 +52,17 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
-        _screenState.value = HomeScreenState.Posts(posts = newPosts)
+        _screenState.value = NewsFeedScreenState.Posts(posts = newPosts)
     }
 
     fun remove(feedPost : FeedPost) {
 
         val currentState = screenState.value
-        if (currentState !is HomeScreenState.Posts) return
+        if (currentState !is NewsFeedScreenState.Posts) return
 
         val oldPosts = currentState.posts.toMutableList()
         oldPosts.remove(feedPost)
 
-        _screenState.value = HomeScreenState.Posts(posts = oldPosts)
+        _screenState.value = NewsFeedScreenState.Posts(posts = oldPosts)
     }
 }

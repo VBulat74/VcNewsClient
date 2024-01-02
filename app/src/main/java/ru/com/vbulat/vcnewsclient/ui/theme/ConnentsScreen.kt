@@ -22,53 +22,60 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.com.vbulat.vcnewsclient.CommentsVewModel
 import ru.com.vbulat.vcnewsclient.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    feedPost: FeedPost,
-    comments : List<PostComment>,
-    onBackPressed : () -> Unit,
+    onBackPressed: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "Comments for FeedPost ID: ${feedPost.id}")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onBackPressed() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }             
-                },
-            )
 
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                start = 8.dp,
-                end = 8.dp,
-                bottom = 80.dp
-            )
-        ) {
-            items(
-                items = comments,
-                key = {it.id}
-            ){ comment ->
-                CommentItem(comment = comment)
+    val vewModel: CommentsVewModel = viewModel()
+    val screenState = vewModel.screenState.observeAsState(CommentsScreenState.Initial)
+    val currentState = screenState.value
+
+    if (currentState is CommentsScreenState.Comments) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = "Comments for FeedPost ID: ${currentState.feedPost.id}")
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { onBackPressed() }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                )
+
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier.padding(paddingValues),
+                contentPadding = PaddingValues(
+                    top = 16.dp,
+                    start = 8.dp,
+                    end = 8.dp,
+                    bottom = 80.dp
+                )
+            ) {
+                items(
+                    items = currentState.comments,
+                    key = { it.id }
+                ) { comment ->
+                    CommentItem(comment = comment)
+                }
             }
         }
     }
@@ -77,12 +84,12 @@ fun CommentsScreen(
 @Composable
 private fun CommentItem(
     comment: PostComment
-){
-    Row (
+) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-    ){
+    ) {
         Image(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = comment.authorAvatarId),
@@ -114,7 +121,7 @@ private fun CommentItem(
 
 @Preview
 @Composable
-private fun PreviewComment(){
+private fun PreviewComment() {
     VcNewsClientTheme {
         CommentItem(comment = PostComment(id = 0))
     }
