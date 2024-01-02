@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.navigaton.AppNavGraph
+import ru.com.vbulat.vcnewsclient.navigaton.Screen
 import ru.com.vbulat.vcnewsclient.navigaton.rememberNavigationState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -72,22 +73,22 @@ fun MainScreen() {
         //Box(modifier = Modifier.padding(paddingValues))
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
-                if (commentToPost.value == null) {
-                    HomeScreen(
-                        paddingValues = paddingValues,
-                        onCommentClickListener = {
-                            commentToPost.value = it
-                        }
-                    )
-                } else {
-                    CommentsScreen (
-                        feedPost = commentToPost.value!!,
-                        onBackPressed = {commentToPost.value = null})
-                }
+            newsFeedScreenContent = {
+                HomeScreen(
+                    paddingValues = paddingValues,
+                    onCommentClickListener = {
+                        commentToPost.value = it
+                        navigationState.navigateTo(Screen.Comments.route)
+                    }
+                )
             },
             favoriteScreenContent = { TextCounter(name = "Favorite") },
             profileScreenContent = { TextCounter(name = "Profile") },
+            commentsScreenContent = {
+                CommentsScreen(
+                    feedPost = commentToPost.value!!,
+                    onBackPressed = { commentToPost.value = null })
+            }
         )
     }
 }
