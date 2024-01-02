@@ -30,15 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.com.vbulat.vcnewsclient.CommentsVewModel
+import ru.com.vbulat.vcnewsclient.CommentsVewModelFactory
+import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
     onBackPressed: () -> Unit,
+    feedPost: FeedPost,
 ) {
 
-    val vewModel: CommentsVewModel = viewModel()
+    val vewModel: CommentsVewModel = viewModel(
+        factory = CommentsVewModelFactory(feedPost)
+    )
     val screenState = vewModel.screenState.observeAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
 

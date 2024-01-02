@@ -7,13 +7,15 @@ import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.PostComment
 import ru.com.vbulat.vcnewsclient.ui.theme.CommentsScreenState
 
-class CommentsVewModel : ViewModel() {
+class CommentsVewModel(
+    feedPost: FeedPost
+) : ViewModel() {
 
     private val _screenState = MutableLiveData<CommentsScreenState>(CommentsScreenState.Initial)
     val screenState : LiveData<CommentsScreenState> = _screenState
 
     init {
-        loadComments(FeedPost())
+        loadComments(feedPost)
     }
 
     fun loadComments(feedPost: FeedPost){

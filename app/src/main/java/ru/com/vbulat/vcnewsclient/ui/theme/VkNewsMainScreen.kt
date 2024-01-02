@@ -81,9 +81,9 @@ fun MainScreen() {
                         }
                     )
                 } else {
-                    CommentsScreen {
-                        commentToPost.value = null
-                    }
+                    CommentsScreen (
+                        feedPost = commentToPost.value!!,
+                        onBackPressed = {commentToPost.value = null})
                 }
             },
             favoriteScreenContent = { TextCounter(name = "Favorite") },
