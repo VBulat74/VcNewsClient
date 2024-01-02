@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
+import ru.com.vbulat.vcnewsclient.ui.theme.HomeScreenState
 import ru.com.vbulat.vcnewsclient.ui.theme.NavigationItem
 
 class MainViewModel : ViewModel() {
@@ -20,8 +21,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private val _feedPosts = MutableLiveData<List<FeedPost>>(sourceList)
-    val feedPosts: LiveData<List<FeedPost>> = _feedPosts
+    private val initialState = HomeScreenState.Posts(posts = sourceList)
+
+    private val _screenState = MutableLiveData<HomeScreenState>(initialState)
+    val screenState: LiveData<HomeScreenState> = _screenState
 
     private val _selectedNavItem = MutableLiveData<NavigationItem> (NavigationItem.Home)
     val selectedNavItem : LiveData <NavigationItem> = _selectedNavItem
@@ -32,7 +35,7 @@ class MainViewModel : ViewModel() {
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
 
-        val oldPosts = feedPosts.value?.toMutableList() ?: mutableListOf()
+        val oldPosts = screenState.value?.toMutableList() ?: mutableListOf()
 
         val oldStatistics = feedPost.statistics
         val newStatistics = oldStatistics.toMutableList().apply {
@@ -45,7 +48,7 @@ class MainViewModel : ViewModel() {
             }
         }
         val newFeedPost = feedPost.copy(statistics = newStatistics)
-        _feedPosts.value = oldPosts.apply {
+        _screenState.value = oldPosts.apply {
             replaceAll {
                 if (it.id == newFeedPost.id) {
                     newFeedPost
@@ -57,8 +60,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun remove(feedPost : FeedPost) {
-        val oldPosts = feedPosts.value?.toMutableList() ?: mutableListOf()
+        val oldPosts = screenState.value?.toMutableList() ?: mutableListOf()
         oldPosts.remove(feedPost)
-        _feedPosts.value = oldPosts
+        _screenState.value = oldPosts
     }
 }
