@@ -19,11 +19,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.navigaton.AppNavGraph
-import ru.com.vbulat.vcnewsclient.navigaton.Screen
 import ru.com.vbulat.vcnewsclient.navigaton.rememberNavigationState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -42,15 +42,25 @@ fun MainScreen() {
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
 
                 val items =
-                    listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
+                    listOf(
+                        NavigationItem.Home,
+                        NavigationItem.Favorite,
+                        NavigationItem.Profile
+                    )
                 items.forEach { item ->
+
+                    val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                        it.route == item.screen.route
+                    } ?: false
+
                     NavigationBarItem(
-                        selected = currentRoute == item.screen.route,
+                        selected = selected,
                         onClick = {
-                            navigationState.navigateTo(item.screen.route)
+                            if (!selected) {
+                                navigationState.navigateTo(item.screen.route)
+                            }
                         },
                         label = {
                             Text(text = stringResource(id = item.titleResId))
@@ -78,7 +88,7 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         commentToPost.value = it
-                        navigationState.navigateTo(Screen.Comments.route)
+                        navigationState.navigateToComments()
                     }
                 )
             },
@@ -87,7 +97,10 @@ fun MainScreen() {
             commentsScreenContent = {
                 CommentsScreen(
                     feedPost = commentToPost.value!!,
-                    onBackPressed = { commentToPost.value = null })
+                    onBackPressed = {
+                        navigationState.navHostController.popBackStack()
+                    },
+                )
             }
         )
     }

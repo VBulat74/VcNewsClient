@@ -16,7 +16,7 @@ sealed class NavigationItem(
     object Home : NavigationItem(
         titleResId = R.string.navigation_item_main,
         icon = Icons.Outlined.Home,
-        screen = Screen.NewsFeed,
+        screen = Screen.Home,
     )
 
     object Favorite : NavigationItem(
