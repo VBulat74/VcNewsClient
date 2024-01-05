@@ -3,7 +3,7 @@ package ru.com.vbulat.vcnewsclient
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import ru.com.vbulat.vcnewsclient.ui.theme.MainScreen
+import ru.com.vbulat.vcnewsclient.ui.theme.ActivityResultTest
 import ru.com.vbulat.vcnewsclient.ui.theme.VcNewsClientTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VcNewsClientTheme {
-                MainScreen()
+                ActivityResultTest()
             }
         }
     }
