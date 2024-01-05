@@ -2,6 +2,8 @@
     <string name="app_name">VcNewsClient</string>
     <string name="Template_text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi egestas, tortor ac ultricies auctor, odio nunc scelerisque risus, et feugiat est dui non orci. Vivamus consequat id enim efficitur pulvinar. "</string>
 
+    <integer name="com_vk_sdk_AppId">51825863</integer>
+
     <string name="navigation_item_main">Главная</string>
     <string name="navigation_item_favoritу">Избранное</string>
     <string name="navigation_item_profile">Профиль</string>

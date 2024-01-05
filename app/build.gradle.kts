@@ -58,6 +58,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
+
 
 
     implementation("androidx.core:core-ktx:1.12.0")
