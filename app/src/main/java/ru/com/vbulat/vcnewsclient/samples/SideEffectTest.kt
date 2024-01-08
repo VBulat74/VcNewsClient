@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.samples
 
 import android.os.Handler
 import androidx.compose.foundation.layout.Column

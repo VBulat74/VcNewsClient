@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite

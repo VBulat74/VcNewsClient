@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -22,6 +22,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.com.vbulat.vcnewsclient.navigaton.AppNavGraph
 import ru.com.vbulat.vcnewsclient.navigaton.rememberNavigationState
+import ru.com.vbulat.vcnewsclient.presentation.comments.CommentsScreen
+import ru.com.vbulat.vcnewsclient.presentation.news.NewsFeedScreen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -77,7 +79,7 @@ fun MainScreen() {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
-                HomeScreen(
+                NewsFeedScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)

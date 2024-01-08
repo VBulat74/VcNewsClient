@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -15,12 +15,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.com.vbulat.vcnewsclient.NewsFeedViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(
+fun NewsFeedScreen(
     paddingValues: PaddingValues,
     onCommentClickListener : (FeedPost) -> Unit
 ){
@@ -77,7 +76,8 @@ private fun FeedPosts(
 
                 },
                 directions = setOf(DismissDirection.EndToStart),
-                dismissContent = {PostCard(
+                dismissContent = {
+                    PostCard(
                     feedPost = feedPost,
                     onLikeClickListener = { item ->
                         viewModel.updateCount(feedPost, item)
@@ -91,7 +91,8 @@ private fun FeedPosts(
                     onCommentsClickListener = {
                         onCommentClickListener (feedPost)
                     },
-                )}
+                )
+                }
             )
         }
     }

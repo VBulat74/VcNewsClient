@@ -1,11 +1,10 @@
-package ru.com.vbulat.vcnewsclient
+package ru.com.vbulat.vcnewsclient.presentation.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
-import ru.com.vbulat.vcnewsclient.ui.theme.NewsFeedScreenState
 
 class NewsFeedViewModel : ViewModel() {
 

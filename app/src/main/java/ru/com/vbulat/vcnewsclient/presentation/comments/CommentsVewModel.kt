@@ -1,11 +1,10 @@
-package ru.com.vbulat.vcnewsclient
+package ru.com.vbulat.vcnewsclient.presentation.comments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.PostComment
-import ru.com.vbulat.vcnewsclient.ui.theme.CommentsScreenState
 
 class CommentsVewModel(
     feedPost: FeedPost

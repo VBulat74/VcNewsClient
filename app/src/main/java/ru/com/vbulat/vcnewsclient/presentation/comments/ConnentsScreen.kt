@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.comments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -29,10 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.com.vbulat.vcnewsclient.CommentsVewModel
-import ru.com.vbulat.vcnewsclient.CommentsVewModelFactory
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.PostComment
+import ru.com.vbulat.vcnewsclient.ui.theme.VcNewsClientTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

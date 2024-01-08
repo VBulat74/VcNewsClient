@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient
+package ru.com.vbulat.vcnewsclient.presentation.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

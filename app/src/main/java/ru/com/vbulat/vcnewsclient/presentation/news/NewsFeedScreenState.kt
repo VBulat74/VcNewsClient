@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.news
 
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 

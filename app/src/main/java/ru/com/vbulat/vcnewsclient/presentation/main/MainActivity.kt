@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient
+package ru.com.vbulat.vcnewsclient.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,8 +8,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
-import ru.com.vbulat.vcnewsclient.ui.theme.LoginScreen
-import ru.com.vbulat.vcnewsclient.ui.theme.MainScreen
 import ru.com.vbulat.vcnewsclient.ui.theme.VcNewsClientTheme
 
 class MainActivity : ComponentActivity() {

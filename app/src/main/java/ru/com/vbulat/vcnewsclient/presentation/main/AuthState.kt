@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient
+package ru.com.vbulat.vcnewsclient.presentation.main
 
 sealed class AuthState {
 

@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.ui.theme
+package ru.com.vbulat.vcnewsclient.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
