@@ -5,11 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.vk.api.sdk.VKPreferencesKeyValueStorage
-import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.launch
-import ru.com.vbulat.vcnewsclient.data.mapper.NewsFeedMapper
-import ru.com.vbulat.vcnewsclient.data.network.ApiFactory
+import ru.com.vbulat.vcnewsclient.data.repository.NewsFeedRepository
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
 
@@ -22,7 +19,7 @@ class NewsFeedViewModel (application : Application) : AndroidViewModel(applicati
     private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
     val screenState: LiveData<NewsFeedScreenState> = _screenState
 
-    private val mapper = NewsFeedMapper()
+    private val repository = NewsFeedRepository(application)
 
     init {
         loadRecommendations()
@@ -30,11 +27,20 @@ class NewsFeedViewModel (application : Application) : AndroidViewModel(applicati
 
     private fun loadRecommendations(){
         viewModelScope.launch {
-            val storage = VKPreferencesKeyValueStorage(getApplication())
-            val token = VKAccessToken.restore(storage) ?: return@launch
-            val response = ApiFactory.apiService.loadRecommendation(token.accessToken)
-            val feedPosts = mapper.mapResponseToPosts(response)
+            val feedPosts = repository.loadRecommendations()
             _screenState.value = NewsFeedScreenState.Posts(posts = feedPosts)
+        }
+    }
+
+    fun changeLikeStatus(feedPost : FeedPost){
+        viewModelScope.launch {
+            if (feedPost.isLiked){
+                repository.deleteLike(feedPost)
+                _screenState.value = NewsFeedScreenState.Posts(posts = repository.feedPosts)
+            }else{
+                repository.addLike(feedPost)
+                _screenState.value = NewsFeedScreenState.Posts(posts = repository.feedPosts)
+            }
         }
     }
 
@@ -78,4 +84,6 @@ class NewsFeedViewModel (application : Application) : AndroidViewModel(applicati
 
         _screenState.value = NewsFeedScreenState.Posts(posts = oldPosts)
     }
+
+
 }
