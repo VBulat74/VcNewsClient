@@ -32,6 +32,15 @@ class NewsFeedViewModel (application : Application) : AndroidViewModel(applicati
         }
     }
 
+    fun loadNextRecommendations(){
+        _screenState.value = NewsFeedScreenState.Posts(
+            posts = repository.feedPosts,
+            nextDataIsLoading = true
+        )
+
+        loadRecommendations()
+    }
+
     fun changeLikeStatus(feedPost : FeedPost){
         viewModelScope.launch {
             if (feedPost.isLiked){
