@@ -7,6 +7,7 @@ import ru.com.vbulat.vcnewsclient.data.mapper.NewsFeedMapper
 import ru.com.vbulat.vcnewsclient.data.model.LikesCountResponseDto
 import ru.com.vbulat.vcnewsclient.data.network.ApiFactory
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.PostComment
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
 import ru.com.vbulat.vcnewsclient.domain.StatisticType
 
@@ -59,6 +60,15 @@ class NewsFeedRepository(application : Application) {
         )
 
         _feedPosts.remove(feedPost)
+    }
+
+    suspend fun getComments (feedPost : FeedPost) : List<PostComment> {
+        val comments = apiService.getComments(
+            token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id,
+        )
+        return mapper.mapResponseToComments(comments)
     }
 
     suspend fun addLike(
