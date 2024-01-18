@@ -1,8 +1,10 @@
 package ru.com.vbulat.vcnewsclient.presentation.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
@@ -13,15 +15,19 @@ import ru.com.vbulat.vcnewsclient.data.repository.NewsFeedRepository
 import ru.com.vbulat.vcnewsclient.domain.FeedPost
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
 
-class NewsFeedViewModel (application : Application) : AndroidViewModel(application) {
+class NewsFeedViewModel(application : Application) : AndroidViewModel(application) {
 
     private val repository = NewsFeedRepository(application)
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("AAA", "Exception caught by Exception handler")
+    }
 
     private val recommendationsFlow = repository.recommendations
 
     private val loadNextDataEvents = MutableSharedFlow<Unit>()
     private val loadNextDataFlow = flow {
-        loadNextDataEvents.collect(){
+        loadNextDataEvents.collect() {
             emit(
                 NewsFeedScreenState.Posts(
                     posts = recommendationsFlow.value,
@@ -33,29 +39,29 @@ class NewsFeedViewModel (application : Application) : AndroidViewModel(applicati
 
     val screenState = recommendationsFlow
         .filter { it.isNotEmpty() }
-        .map { NewsFeedScreenState.Posts(posts = it) as NewsFeedScreenState}
+        .map { NewsFeedScreenState.Posts(posts = it) as NewsFeedScreenState }
         .onStart { emit(NewsFeedScreenState.Loading) }
         .mergeWith(loadNextDataFlow)
 
-    fun loadNextRecommendations(){
+    fun loadNextRecommendations() {
         viewModelScope.launch {
             loadNextDataEvents.emit(Unit)
             repository.loadNextData()
         }
     }
 
-    fun changeLikeStatus(feedPost : FeedPost){
-        viewModelScope.launch {
-            if (feedPost.isLiked){
+    fun changeLikeStatus(feedPost : FeedPost) {
+        viewModelScope.launch(exceptionHandler) {
+            if (feedPost.isLiked) {
                 repository.deleteLike(feedPost)
-            }else{
+            } else {
                 repository.addLike(feedPost)
             }
         }
     }
 
     fun remove(feedPost : FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.deletePost(feedPost)
         }
     }
