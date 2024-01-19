@@ -22,11 +22,13 @@ import ru.com.vbulat.vcnewsclient.domain.PostComment
 import ru.com.vbulat.vcnewsclient.domain.StatisticItem
 import ru.com.vbulat.vcnewsclient.domain.StatisticType
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
+import ru.com.vbulat.vcnewsclient.domain.AuthState
 
 class NewsFeedRepository(application : Application) {
 
     private val storage = VKPreferencesKeyValueStorage(application)
-    private val token = VKAccessToken.restore(storage)
+    private val token
+        get() = VKAccessToken.restore(storage)
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val nextDataNeededEvent = MutableSharedFlow<Unit> (replay = 1)
@@ -70,6 +72,23 @@ class NewsFeedRepository(application : Application) {
 
     private var nextFrom : String? = null
 
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
+
+    val authStateFlow = flow {
+        checkAuthStateEvents.emit(Unit)
+        checkAuthStateEvents.collect{
+            val currentToken = token
+            val loggedIn = (currentToken != null) && (currentToken.isValid)
+            val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
+
+            emit(authState)
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        AuthState.Initial
+    )
+
     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
         .mergeWith(refreshedListFlow)
         .stateIn (
@@ -77,6 +96,10 @@ class NewsFeedRepository(application : Application) {
         started = SharingStarted.Lazily,
         initialValue = feedPosts,
     )
+
+    suspend fun checkAuthState(){
+        checkAuthStateEvents.emit(Unit)
+    }
 
     suspend fun loadNextData(){
         nextDataNeededEvent.emit(Unit)

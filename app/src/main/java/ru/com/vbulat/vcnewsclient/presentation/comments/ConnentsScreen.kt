@@ -40,11 +40,11 @@ import ru.com.vbulat.vcnewsclient.domain.PostComment
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    onBackPressed: () -> Unit,
-    feedPost: FeedPost,
+    onBackPressed : () -> Unit,
+    feedPost : FeedPost,
 ) {
 
-    val vewModel: CommentsVewModel = viewModel(
+    val vewModel : CommentsVewModel = viewModel(
         factory = CommentsVewModelFactory(
             feedPost = feedPost,
             application = LocalContext.current.applicationContext as Application,
@@ -95,7 +95,7 @@ fun CommentsScreen(
 
 @Composable
 private fun CommentItem(
-    comment: PostComment
+    comment : PostComment
 ) {
     Row(
         modifier = Modifier
@@ -113,7 +113,7 @@ private fun CommentItem(
 
         Column {
             Text(
-                text = "${comment.authorName}",
+                text = comment.authorName,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontSize = 12.sp,
             )
