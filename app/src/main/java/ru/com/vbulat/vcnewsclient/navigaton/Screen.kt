@@ -2,7 +2,7 @@ package ru.com.vbulat.vcnewsclient.navigaton
 
 import android.net.Uri
 import com.google.gson.Gson
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 
 sealed class Screen (
     val route : String,

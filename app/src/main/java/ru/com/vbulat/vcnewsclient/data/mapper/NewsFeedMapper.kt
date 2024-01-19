@@ -2,10 +2,10 @@ package ru.com.vbulat.vcnewsclient.data.mapper
 
 import ru.com.vbulat.vcnewsclient.data.model.CommentsResponseDto
 import ru.com.vbulat.vcnewsclient.data.model.NewsFeedResponseDto
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
-import ru.com.vbulat.vcnewsclient.domain.PostComment
-import ru.com.vbulat.vcnewsclient.domain.StatisticItem
-import ru.com.vbulat.vcnewsclient.domain.StatisticType
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticItem
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

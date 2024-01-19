@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.ui.theme.DarkBlue
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

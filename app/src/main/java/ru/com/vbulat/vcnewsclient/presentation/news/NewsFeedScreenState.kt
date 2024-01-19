@@ -1,6 +1,6 @@
 package ru.com.vbulat.vcnewsclient.presentation.news
 
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 
 sealed class NewsFeedScreenState {
 

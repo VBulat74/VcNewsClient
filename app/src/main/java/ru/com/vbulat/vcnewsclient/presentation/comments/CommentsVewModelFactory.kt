@@ -3,7 +3,7 @@ package ru.com.vbulat.vcnewsclient.presentation.comments
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 
 class CommentsVewModelFactory(
     private val feedPost: FeedPost,

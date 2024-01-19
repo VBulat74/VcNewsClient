@@ -6,7 +6,6 @@ import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,14 +16,15 @@ import kotlinx.coroutines.flow.stateIn
 import ru.com.vbulat.vcnewsclient.data.mapper.NewsFeedMapper
 import ru.com.vbulat.vcnewsclient.data.model.LikesCountResponseDto
 import ru.com.vbulat.vcnewsclient.data.network.ApiFactory
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
-import ru.com.vbulat.vcnewsclient.domain.PostComment
-import ru.com.vbulat.vcnewsclient.domain.StatisticItem
-import ru.com.vbulat.vcnewsclient.domain.StatisticType
+import ru.com.vbulat.vcnewsclient.domain.entety.AuthState
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticItem
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticType
+import ru.com.vbulat.vcnewsclient.domain.repository.NewsFeedRepository
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
-import ru.com.vbulat.vcnewsclient.domain.AuthState
 
-class NewsFeedRepository(application : Application) {
+class NewsFeedRepositoryImpl(application : Application) : NewsFeedRepository {
 
     private val storage = VKPreferencesKeyValueStorage(application)
     private val token
@@ -74,7 +74,7 @@ class NewsFeedRepository(application : Application) {
 
     private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
 
-    val authStateFlow = flow {
+    private val authStateFlow = flow {
         checkAuthStateEvents.emit(Unit)
         checkAuthStateEvents.collect{
             val currentToken = token
@@ -89,7 +89,7 @@ class NewsFeedRepository(application : Application) {
         AuthState.Initial
     )
 
-    val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
+    private val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
         .mergeWith(refreshedListFlow)
         .stateIn (
         scope = coroutineScope,
@@ -97,11 +97,15 @@ class NewsFeedRepository(application : Application) {
         initialValue = feedPosts,
     )
 
-    suspend fun checkAuthState(){
+    override fun getAuthStateFlow() : StateFlow<AuthState> = authStateFlow
+
+    override fun getRecommendations() : StateFlow<List<FeedPost>> = recommendations
+
+    override suspend fun checkAuthState(){
         checkAuthStateEvents.emit(Unit)
     }
 
-    suspend fun loadNextData(){
+    override suspend fun loadNextData(){
         nextDataNeededEvent.emit(Unit)
     }
 
@@ -109,7 +113,7 @@ class NewsFeedRepository(application : Application) {
         return token?.accessToken ?: throw IllegalStateException("Token is null")
     }
 
-    suspend fun deletePost(
+    override suspend fun deletePost(
         feedPost : FeedPost
     ){
         apiService.ignorePost(
@@ -122,7 +126,7 @@ class NewsFeedRepository(application : Application) {
         refreshedListFlow.emit(feedPosts)
     }
 
-    fun getComments (feedPost : FeedPost) : Flow<List<PostComment>> = flow {
+    override fun getComments (feedPost : FeedPost) : StateFlow<List<PostComment>> = flow {
         val comments = apiService.getComments(
             token = getAccessToken(),
             ownerId = feedPost.communityId,
@@ -132,9 +136,13 @@ class NewsFeedRepository(application : Application) {
     }.retry {
         delay(RETRY_TIMEOUT_MILLIS)
         true
-    }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = listOf(),
+    )
 
-    suspend fun addLike(
+    override suspend fun addLike(
         feedPost : FeedPost
     ){
         val response = apiService.addLike(
@@ -147,7 +155,7 @@ class NewsFeedRepository(application : Application) {
 
     }
 
-    suspend fun deleteLike(
+    override suspend fun deleteLike(
         feedPost : FeedPost
     ){
         val response = apiService.deleteLike(

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.gson.Gson
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
     newsFeedScreenContent : @Composable ()-> Unit,

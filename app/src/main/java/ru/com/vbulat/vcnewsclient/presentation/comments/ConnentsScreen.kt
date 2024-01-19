@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import ru.com.vbulat.vcnewsclient.R
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
-import ru.com.vbulat.vcnewsclient.domain.PostComment
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

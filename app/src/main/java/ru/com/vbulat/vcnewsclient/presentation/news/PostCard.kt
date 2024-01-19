@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import ru.com.vbulat.vcnewsclient.R
-import ru.com.vbulat.vcnewsclient.domain.FeedPost
-import ru.com.vbulat.vcnewsclient.domain.StatisticItem
-import ru.com.vbulat.vcnewsclient.domain.StatisticType
+import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticItem
+import ru.com.vbulat.vcnewsclient.domain.entety.StatisticType
 import ru.com.vbulat.vcnewsclient.ui.theme.DarkRed
 
 @Composable

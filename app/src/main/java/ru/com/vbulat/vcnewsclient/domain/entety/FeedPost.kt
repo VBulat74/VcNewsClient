@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.domain
+package ru.com.vbulat.vcnewsclient.domain.entety
 
 data class FeedPost (
     val id : Long,

@@ -1,4 +1,4 @@
-package ru.com.vbulat.vcnewsclient.domain
+package ru.com.vbulat.vcnewsclient.domain.entety
 
 sealed class AuthState {
 
