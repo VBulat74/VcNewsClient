@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.map
 import ru.com.vbulat.vcnewsclient.data.repository.NewsFeedRepositoryImpl
 import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.usecases.GetCommentsUseCase
+import javax.inject.Inject
 
-class CommentsVewModel(
+class CommentsVewModel @Inject constructor(
     feedPost : FeedPost,
     application : Application
 ) : ViewModel() {

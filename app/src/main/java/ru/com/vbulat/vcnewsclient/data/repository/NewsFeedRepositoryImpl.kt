@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import ru.com.vbulat.vcnewsclient.data.mapper.NewsFeedMapper
 import ru.com.vbulat.vcnewsclient.data.model.LikesCountResponseDto
 import ru.com.vbulat.vcnewsclient.data.network.ApiFactory
+import ru.com.vbulat.vcnewsclient.data.network.ApiService
 import ru.com.vbulat.vcnewsclient.domain.entety.AuthState
 import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
@@ -23,10 +24,13 @@ import ru.com.vbulat.vcnewsclient.domain.entety.StatisticItem
 import ru.com.vbulat.vcnewsclient.domain.entety.StatisticType
 import ru.com.vbulat.vcnewsclient.domain.repository.NewsFeedRepository
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(application : Application) : NewsFeedRepository {
-
-    private val storage = VKPreferencesKeyValueStorage(application)
+class NewsFeedRepositoryImpl@Inject constructor(
+    private val apiService : ApiService,
+    private val mapper : NewsFeedMapper,
+    private val storage : VKPreferencesKeyValueStorage,
+) : NewsFeedRepository {
     private val token
         get() = VKAccessToken.restore(storage)
 
@@ -62,9 +66,6 @@ class NewsFeedRepositoryImpl(application : Application) : NewsFeedRepository {
     }.catch {
 
     }
-
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts : List<FeedPost>

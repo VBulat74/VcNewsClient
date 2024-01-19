@@ -19,8 +19,9 @@ import ru.com.vbulat.vcnewsclient.domain.usecases.DeletePostUseCase
 import ru.com.vbulat.vcnewsclient.domain.usecases.GetRecommendationUseCase
 import ru.com.vbulat.vcnewsclient.domain.usecases.LoadNextDataUseCase
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
+import javax.inject.Inject
 
-class NewsFeedViewModel(application : Application) : AndroidViewModel(application) {
+class NewsFeedViewModel @Inject constructor(application : Application) : AndroidViewModel(application) {
 
     private val repository = NewsFeedRepositoryImpl(application)
 
