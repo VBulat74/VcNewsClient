@@ -1,8 +1,7 @@
 package ru.com.vbulat.vcnewsclient.presentation.news
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import ru.com.vbulat.vcnewsclient.data.repository.NewsFeedRepositoryImpl
 import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.usecases.AddLikeUseCase
 import ru.com.vbulat.vcnewsclient.domain.usecases.DeleteLikeUseCase
@@ -21,15 +19,13 @@ import ru.com.vbulat.vcnewsclient.domain.usecases.LoadNextDataUseCase
 import ru.com.vbulat.vcnewsclient.extensions.mergeWith
 import javax.inject.Inject
 
-class NewsFeedViewModel @Inject constructor(application : Application) : AndroidViewModel(application) {
-
-    private val repository = NewsFeedRepositoryImpl(application)
-
-    private val getRecommendationUseCase = GetRecommendationUseCase(repository)
-    private val loadNextDataUseCase = LoadNextDataUseCase(repository)
-    private val deleteLikeUseCase = DeleteLikeUseCase(repository)
-    private val addLikeUseCase = AddLikeUseCase(repository)
-    private val deletePostUseCase = DeletePostUseCase(repository)
+class NewsFeedViewModel @Inject constructor(
+    private val getRecommendationUseCase: GetRecommendationUseCase,
+    private val loadNextDataUseCase: LoadNextDataUseCase,
+    private val deleteLikeUseCase: DeleteLikeUseCase,
+    private val addLikeUseCase: AddLikeUseCase,
+    private val deletePostUseCase: DeletePostUseCase,
+) : ViewModel() {
 
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         Log.d("AAA", "Exception caught by Exception handler")
@@ -62,7 +58,7 @@ class NewsFeedViewModel @Inject constructor(application : Application) : Android
         }
     }
 
-    fun changeLikeStatus(feedPost : FeedPost) {
+    fun changeLikeStatus(feedPost: FeedPost) {
         viewModelScope.launch(exceptionHandler) {
             if (feedPost.isLiked) {
                 deleteLikeUseCase(feedPost)
@@ -72,7 +68,7 @@ class NewsFeedViewModel @Inject constructor(application : Application) : Android
         }
     }
 
-    fun remove(feedPost : FeedPost) {
+    fun remove(feedPost: FeedPost) {
         viewModelScope.launch(exceptionHandler) {
             deletePostUseCase(feedPost)
         }

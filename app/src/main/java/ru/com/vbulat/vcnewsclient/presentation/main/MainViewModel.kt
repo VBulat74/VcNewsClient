@@ -1,21 +1,16 @@
 package ru.com.vbulat.vcnewsclient.presentation.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.com.vbulat.vcnewsclient.data.repository.NewsFeedRepositoryImpl
 import ru.com.vbulat.vcnewsclient.domain.usecases.CheckAuthStateUseCase
 import ru.com.vbulat.vcnewsclient.domain.usecases.GetGetAuthStateFlowUseCase
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(application : Application) : AndroidViewModel(application) {
-
-    private val repository = NewsFeedRepositoryImpl(application)
-
-    private val getAuthStateFlowUseCase = GetGetAuthStateFlowUseCase(repository)
-    private val checkAuthStateUseCase = CheckAuthStateUseCase(repository)
-
+class MainViewModel @Inject constructor(
+    private val getAuthStateFlowUseCase: GetGetAuthStateFlowUseCase,
+    private val checkAuthStateUseCase: CheckAuthStateUseCase,
+) : ViewModel() {
     val authState = getAuthStateFlowUseCase()
 
     fun performAuthResult() {

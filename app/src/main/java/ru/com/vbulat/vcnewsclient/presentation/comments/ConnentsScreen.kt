@@ -1,6 +1,5 @@
 package ru.com.vbulat.vcnewsclient.presentation.comments
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,19 +34,18 @@ import coil.compose.AsyncImage
 import ru.com.vbulat.vcnewsclient.R
 import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
+import ru.com.vbulat.vcnewsclient.presentation.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    onBackPressed : () -> Unit,
-    feedPost : FeedPost,
+    viewModelFactory: ViewModelFactory,
+    onBackPressed: () -> Unit,
+    feedPost: FeedPost,
 ) {
 
-    val vewModel : CommentsVewModel = viewModel(
-        factory = CommentsVewModelFactory(
-            feedPost = feedPost,
-            application = LocalContext.current.applicationContext as Application,
-        )
+    val vewModel: CommentsVewModel = viewModel(
+        factory = viewModelFactory
     )
     val screenState = vewModel.screenState.collectAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
@@ -95,7 +92,7 @@ fun CommentsScreen(
 
 @Composable
 private fun CommentItem(
-    comment : PostComment
+    comment: PostComment
 ) {
     Row(
         modifier = Modifier

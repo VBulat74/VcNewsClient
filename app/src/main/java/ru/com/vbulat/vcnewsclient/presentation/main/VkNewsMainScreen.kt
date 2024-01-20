@@ -22,12 +22,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.com.vbulat.vcnewsclient.navigaton.AppNavGraph
 import ru.com.vbulat.vcnewsclient.navigaton.rememberNavigationState
+import ru.com.vbulat.vcnewsclient.presentation.ViewModelFactory
 import ru.com.vbulat.vcnewsclient.presentation.comments.CommentsScreen
 import ru.com.vbulat.vcnewsclient.presentation.news.NewsFeedScreen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModelFactory: ViewModelFactory
+) {
     val navigationState = rememberNavigationState()
 
     val systemUiController = rememberSystemUiController()
@@ -80,6 +83,7 @@ fun MainScreen() {
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 NewsFeedScreen(
+                    viewModelFactory = viewModelFactory,
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)
@@ -90,6 +94,7 @@ fun MainScreen() {
             profileScreenContent = { TextCounter(name = "Profile") },
             commentsScreenContent = { feedPost ->
                 CommentsScreen(
+                    viewModelFactory = viewModelFactory,
                     feedPost = feedPost,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
