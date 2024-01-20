@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import ru.com.vbulat.vcnewsclient.presentation.comments.CommentsVewModel
 import ru.com.vbulat.vcnewsclient.presentation.main.MainViewModel
 import ru.com.vbulat.vcnewsclient.presentation.news.NewsFeedViewModel
 
@@ -20,9 +19,4 @@ interface ViewModelModule {
     @ViewModelKey(MainViewModel::class)
     @Binds
     fun bindMainViewModel(viewModel: MainViewModel) : ViewModel
-
-    @IntoMap
-    @ViewModelKey(CommentsVewModel::class)
-    @Binds
-    fun bindCommentsViewModel(viewModel: CommentsVewModel) : ViewModel
 }

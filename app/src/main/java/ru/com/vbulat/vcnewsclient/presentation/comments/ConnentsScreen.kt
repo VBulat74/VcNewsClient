@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,18 +35,22 @@ import coil.compose.AsyncImage
 import ru.com.vbulat.vcnewsclient.R
 import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.domain.entety.PostComment
-import ru.com.vbulat.vcnewsclient.presentation.ViewModelFactory
+import ru.com.vbulat.vcnewsclient.presentation.NewsFeedApplication
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    viewModelFactory: ViewModelFactory,
     onBackPressed: () -> Unit,
     feedPost: FeedPost,
 ) {
 
+    val comment = (LocalContext.current.applicationContext as NewsFeedApplication)
+        .component
+        .getCommentScreenComponentFactory()
+        .create(feedPost  =feedPost)
+
     val vewModel: CommentsVewModel = viewModel(
-        factory = viewModelFactory
+        factory = comment.getVewModelFactory()
     )
     val screenState = vewModel.screenState.collectAsState(CommentsScreenState.Initial)
     val currentState = screenState.value

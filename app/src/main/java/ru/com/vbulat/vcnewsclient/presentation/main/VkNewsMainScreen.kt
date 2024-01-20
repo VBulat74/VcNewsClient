@@ -94,7 +94,6 @@ fun MainScreen(
             profileScreenContent = { TextCounter(name = "Profile") },
             commentsScreenContent = { feedPost ->
                 CommentsScreen(
-                    viewModelFactory = viewModelFactory,
                     feedPost = feedPost,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()

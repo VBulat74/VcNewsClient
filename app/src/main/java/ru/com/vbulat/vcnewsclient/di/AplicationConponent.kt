@@ -3,7 +3,6 @@ package ru.com.vbulat.vcnewsclient.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import ru.com.vbulat.vcnewsclient.domain.entety.FeedPost
 import ru.com.vbulat.vcnewsclient.presentation.main.MainActivity
 
 @ApplicationScope
@@ -15,13 +14,15 @@ import ru.com.vbulat.vcnewsclient.presentation.main.MainActivity
 )
 interface ApplicationComponent {
 
-    fun inject(nainActivity: MainActivity)
+    fun inject(mainActivity: MainActivity)
+
+    fun getCommentScreenComponentFactory() : CommentsScreenComponent.Factory
+
 
     @Component.Factory
     interface Factory{
         fun create(
-            @BindsInstance context : Context,
-            @BindsInstance feedPost: FeedPost,
+            @BindsInstance context : Context
         ) : ApplicationComponent
     }
 }
