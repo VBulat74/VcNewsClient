@@ -3,7 +3,7 @@ package ru.com.vbulat.vcnewsclient.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import ru.com.vbulat.vcnewsclient.presentation.main.MainActivity
+import ru.com.vbulat.vcnewsclient.presentation.ViewModelFactory
 
 @ApplicationScope
 @Component (
@@ -14,7 +14,7 @@ import ru.com.vbulat.vcnewsclient.presentation.main.MainActivity
 )
 interface ApplicationComponent {
 
-    fun inject(mainActivity: MainActivity)
+    fun getViewModelFactory() : ViewModelFactory
 
     fun getCommentScreenComponentFactory() : CommentsScreenComponent.Factory
 

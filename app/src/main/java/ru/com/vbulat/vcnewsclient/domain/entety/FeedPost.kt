@@ -1,5 +1,8 @@
 package ru.com.vbulat.vcnewsclient.domain.entety
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class FeedPost (
     val id : Long,
     val communityId : Long,
